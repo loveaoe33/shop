@@ -71,7 +71,7 @@ var main="<div class='col-md-4'><div class='panel panel-success'><div class='pan
         $("#view").append(main);
         // $('.add').attr('id',i);
  
-123
+123456
 }
 
     
