@@ -18,6 +18,6 @@ class shopcontroller extends Controller
         
 
         // $query=Chugen2::all();
-        return response()->json(array(['OK'=>$_token,'a'=>1],['OK'=>$_token,'a'=>2],['OK'=>$_token,'a'=>3],['OK'=>$_token,'a'=>4],['OK'=>$_token,'a'=>5],['OK'=>$_token,'a'=>6]));
+        return response()->json(array(['OK'=>$_token,'a'=>1,'name'=>'phone'],['OK'=>$_token,'a'=>2,'name'=>'camare'],['OK'=>$_token,'a'=>3,'name'=>'computer'],['OK'=>$_token,'a'=>4,'name'=>'sdcard'],['OK'=>$_token,'a'=>5,'name'=>'tv'],['OK'=>$_token,'a'=>6,'name'=>'monnitor']));
     }
 }

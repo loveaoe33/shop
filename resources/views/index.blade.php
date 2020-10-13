@@ -16,6 +16,9 @@
 <div class='view' id='view' name='view'>
 <div class='col-md-12'>
 <input type='button' class='btn btn-primary' name='l[i].OK' id='add'  value='購買' onclick="alert('123')">
+<!-- <img src="http://127.0.0.1:8000/image/phone.jpg" /> -->
+<!-- <img src='../public/image/phone /'> -->
+<!-- <img src='../product/+" p "+.jpg /'> -->
 </br>
 </div>
 
@@ -25,6 +28,34 @@
 
 
 
+
+<table class="table table-condensed">
+  <caption>購物清單</caption>
+  <thead>
+    <tr>
+      <th>商品名稱</th>
+      <th>商品價格</th>
+      <th>商品數量</th>
+      <th>商品總價</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tanmay</td>
+      <td>Bangalore</td>
+      <td>560001</td>
+      <td>560001</td></tr>
+    <tr>
+      <td>Sachin</td>
+      <td>Mumbai</td>
+      <td>400003</td></tr>
+    <tr>
+      <td>Uma</td>
+      <td>Pune</td>
+      <td>411027</td></tr>
+      
+  </tbody>
+</table>
 
 
 </body>
@@ -66,14 +97,17 @@ $.ajax({
       
       for (var i=0;i<l; i++) {
        var b =response[i].a;
-    //    alert(b);
-var main="<div class='col-md-4'><div class='panel panel-success'><div class='panel-heading'>Panel with panel-success class></div><div class='panel-body'><input type='button'  class='btn btn-primary add' name='add'  id = " + b +"    value='購買' ></div></div></div>"
+       var p =response[i].name;
+       var all='http://127.0.0.1:8000/image/' +p+ '.jpg'
+
+var main="<div class='col-md-4'><div class='panel panel-success'><div class='panel-heading'>Panel with panel-success class></div><div class='panel-body'><img src=" + all +" width='50' height='50'/><br><input type='button'  class='btn btn-primary add' name='add'  id = " + b +"    value='購買' ></div></div></div>"
         $("#view").append(main);
-        // $('.add').attr('id',i);
+
+ 
  
 
 }
-
+z
     
 // alert(l);
 
