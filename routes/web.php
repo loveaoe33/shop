@@ -20,3 +20,4 @@ Route::get('/index','shopcontroller@index');
 
 
 Route::post('/allproduct','shopcontroller@allproduct');
+Route::get('/test','shopcontroller@test');

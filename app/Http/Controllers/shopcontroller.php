@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class shopcontroller extends Controller
 {
@@ -15,9 +16,21 @@ class shopcontroller extends Controller
     public function allproduct(Request $request)
     {
         $_token=$request->get('test2');
+        $result=DB::table('product')->get();
         
 
         // $query=Chugen2::all();
         return response()->json(array(['OK'=>$_token,'a'=>1,'name'=>'phone'],['OK'=>$_token,'a'=>2,'name'=>'camare'],['OK'=>$_token,'a'=>3,'name'=>'computer'],['OK'=>$_token,'a'=>4,'name'=>'sdcard'],['OK'=>$_token,'a'=>5,'name'=>'tv'],['OK'=>$_token,'a'=>6,'name'=>'monnitor']));
+    }
+
+
+    public function test(Request $request)
+    {
+        $_token=$request->get('test2');
+        $result=DB::table('product')->get();
+        
+
+        // $query=Chugen2::all();
+        echo  $result;
     }
 }
