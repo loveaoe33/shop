@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/index','shopcontroller@index');
-
-
+Route::post('/Shopproduct1','shopcontroller@Shopproduct1');
+Route::post('/insertshop','shopcontroller@insertshop');
 Route::post('/allproduct','shopcontroller@allproduct');
 Route::get('/test','shopcontroller@test');
