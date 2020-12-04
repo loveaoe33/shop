@@ -59,156 +59,166 @@
 </html>
 <script>
   $(document).ready(function() {
-    $(document).on('click', '#addtable2', function() {
+        $(document).on('click', '.add', function() {
 
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
 
-      $.ajax({
-        type: "POST",
-        url: 'insertshop',
-        data: {
-          test3: CSRF_TOKEN
-        },
-        dataType: "JSON",
-        success: function(response) {
+          let shopid = $(this).attr("id");
+          let shopquilty = $("input[id=" + shopid + "]").val();
+          $.ajax({
+            type: "POST",
+            url: 'insertshop',
+            data: {
+              test3: CSRF_TOKEN,
+              shopidd: shopid,
+              shopquiltyy: shopquilty
+            },
+            dataType: "JSON",
+            success: function(response) {
+              let l = response.data1;
+              let n = l.length
+              for (var i = 0; i < n; i++) {
+                var productname = l[i].name;
+                var productquantity = l[i].quantity;
+                var producttotal = l[i].total;
+                var productprice = l[i].price;
+                // alert(productprice);
 
+                var shopmain = "<tr><td>  " + productname + "  </td><td>" + productprice + " </td><td>" + productquantity + "</td><td>" + producttotal + "</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>"
+              
+                $("#table").append(shopmain);
+              }
+            },
+            error: function(thrownError) {
+              alert('新增失敗');
+            }
+          });
 
+        });
 
-
-
-          alert('l');
-        },
-
-        error: function(thrownError) {
-          alert('新增失敗');
-        }
-      });
-
-    });
-
-    // $(document).on('click', '#addtable2', function() {
-    //   $('#table').append("<tr><td>add_row2-01</td><td>add_row2-02</td><td>add_row2-03</td><td>123</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>");
-    // });
-
-
-
-    $(document).on('click', '.delete', function() {
-      $(this).parent().parent().remove();
-    });
-
-    $(document).on('click', '.add', function() {
-
-      var product_id = $(this).attr("id");
-      var product_quilty = $("input[id=" + product_id + "]").val();
-      alert(product_quilty);
-
-
-    });
-
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    var a = $('#Account').val();
-
-    var b = $('#Password').val();
-
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
+        // $(document).on('click', '#addtable2', function() {
+        //   $('#table').append("<tr><td>add_row2-01</td><td>add_row2-02</td><td>add_row2-03</td><td>123</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>");
+        // });
 
 
 
-    $.ajax({
-      type: "POST",
-      url: 'allproduct',
-      data: {
-        test2: CSRF_TOKEN
-      },
-      dataType: "JSON",
-      success: function(response) {
+        $(document).on('click', '.delete', function() {
+          $(this).parent().parent().remove();
+        });
 
-        var l = response.length;
+        // $(document).on('click', '.add', function() {
 
-        for (var i = 0; i < l; i++) {
-          var b = response[i].a;
-          var p = response[i].name;
-
-          var all = 'http://127.0.0.1:8000/image/' + p + '.jpg'
-
-          var main = "<div class='col-md-4'><div class='panel panel-success'><div class='panel-heading'>Panel with panel-success class></div><div class='panel-body'><img src=" + all + "  width='150' height='150'/><br><input type='textbox' class='form-control'  id=" + b + " name='quilty'><br><input type='button'  class='btn btn-primary add' name='add'  id = " + b + "    value='購買' ></div></div></div>"
-          $("#view").append(main);
-        }
+        //   var product_id = $(this).attr("id");
+        //   var product_quilty = $("input[id=" + product_id + "]").val();
+        //   alert(product_quilty);
 
 
-        // alert(l);		
-      },
+        // });
 
-      error: function(thrownError) {
-        alert('123');
-      }
-    });
-    $.ajax({
-      type: "POST",
-      url: 'Shopproduct1',
-      data: {
-        test2: CSRF_TOKEN
-      },
-      dataType: "JSON",
-      success: function(response) {
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var a = $('#Account').val();
 
-        let l = response.data1;
-        let n = l.length
-        for (var i = 0; i < n; i++) {
-          var productname = l[i].name;
-          var productquantity = l[i].quantity;
-          var producttotal = l[i].total;
-          var productprice = l[i].price;
-          alert(productprice);
+        var b = $('#Password').val();
 
-          var shopmain = "<tr><td>  " + productname + "  </td><td>" + productprice + " </td><td>" + productquantity + "</td><td>" + producttotal + "</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>"
-          $("#table").append(shopmain);
-        }
-
-      },
-
-      error: function(thrownError) {
-        alert('123');
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
 
 
 
-      }
-    });
-  });
+        $.ajax({
+          type: "POST",
+          url: 'allproduct',
+          data: {
+            test2: CSRF_TOKEN
+          },
+          dataType: "JSON",
+          success: function(response) {
+
+            var l = response.length;
+
+            for (var i = 0; i < l; i++) {
+              var b = response[i].a;
+              var p = response[i].name;
+
+              var all = 'http://127.0.0.1:8000/image/' + p + '.jpg'
+
+              var main = "<div class='col-md-4'><div class='panel panel-success'><div class='panel-heading'>Panel with panel-success class></div><div class='panel-body'><img src=" + all + "  width='150' height='150'/><br><input type='textbox' class='form-control'  id=" + b + " name='quilty'><br><input type='button'  class='btn btn-primary add' name='add'  id = " + b + "    value='購買' ></div></div></div>"
+              $("#view").append(main);
+            }
+
+
+            // alert(l);		
+          },
+
+          error: function(thrownError) {
+            alert('123');
+          }
+        });
+        //   $.ajax({
+        //     type: "POST",
+        //     url: 'Shopproduct1',
+        //     data: {
+        //       test2: CSRF_TOKEN
+        //     },
+        //     dataType: "JSON",
+        //     success: function(response) {
+
+        //       let l = response.data1;
+        //       let n = l.length
+        //       for (var i = 0; i < n; i++) {
+        //         var productname = l[i].name;
+        //         var productquantity = l[i].quantity;
+        //         var producttotal = l[i].total;
+        //         var productprice = l[i].price;
+        //         // alert(productprice);
+
+        //         var shopmain = "<tr><td>  " + productname + "  </td><td>" + productprice + " </td><td>" + productquantity + "</td><td>" + producttotal + "</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>"
+        //         $("#table").append(shopmain);
+        //       }
+
+        //     },
+
+        //     error: function(thrownError) {
+        //       alert('123');
 
 
 
-  // $(document).on('click', '.add', function() {
-  //   $.ajax({
-  //     type: "POST",
-  //     url: 'InsertShop',
-  //     data: {
-  //       test2: CSRF_TOKEN
-  //     },
-  //     dataType: "JSON",
-  //     success: function(response) {
+        //     }
+        //   });
+        // });
+
+
+
+        // $(document).on('click', '.add', function() {
+        //   $.ajax({
+        //     type: "POST",
+        //     url: 'InsertShop',
+        //     data: {
+        //       test2: CSRF_TOKEN
+        //     },
+        //     dataType: "JSON",
+        //     success: function(response) {
 
 
 
 
-  //     },
+        //     },
 
-  //     error: function(thrownError) {
-  //       alert('123');
-
-
-
-  //     }
+        //     error: function(thrownError) {
+        //       alert('123');
 
 
-  //   });
-  // });
+
+        //     }
+
+
+        //   });
+        });
 </script>
