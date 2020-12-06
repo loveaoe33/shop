@@ -10,12 +10,14 @@ class shopcontroller extends Controller
 {
     public function index()
     {
+        DB::table('shopproduct')->delete();
         return view('index');
     }
 
     public function insertshop(Request $request)
 
     {
+        $exist = '';
         $id = $request->get('shopidd');
         $productqyilty = $request->get('shopquiltyy');
         $getstamps = DB::table('product')
@@ -26,8 +28,8 @@ class shopcontroller extends Controller
             $price = $getstamps[0]->price;
             $name = $getstamps[0]->productname;
             $shop = DB::table('shopproduct')
-            ->where('productid', '=', $id)
-            ->get();
+                ->where('productid', '=', $id)
+                ->get();
             $alltotals = 0;
             $result2 = count($shop);
 
@@ -38,6 +40,11 @@ class shopcontroller extends Controller
 
 
                 );
+                global $exist;
+                $exist = 'false';
+                // $users = DB::table('shopproduct')->where('productid', '=', $id)
+                // ->get();
+                // return response()->json(['data1' => $users,'data2' =>$exist]);
             } else {
                 // $name= $getstamps[0]->productname;
                 $check = DB::table('shopproduct')
@@ -47,25 +54,32 @@ class shopcontroller extends Controller
                 $totalprice = $check[0]->total;
                 $qul = $qul + $productqyilty;
                 $alltotals = $price * $productqyilty;
-                $alltotals = $alltotals+$totalprice ;
+                $alltotals = $alltotals + $totalprice;
                 DB::table('shopproduct')
                     ->where('productid', $id)
                     ->update(['quantity' => $qul, 'total' => $alltotals]);
+                global $exist;
+                $exist = 'true';
+                // $users = DB::table('shopproduct')->where('productid', '=', $id)
+                // ->get();
+                // return response()->json(['data1' => $users,'data2' =>$exist]); 
             }
         }
 
-        $query = shopproduct::all();
-        $result = count($query);
-     
+        $users = DB::table('shopproduct')->where('productid', '=', $id)
+            ->get();
 
-        if ($result > 0) {
-            foreach ($query as $all) {
-                $alltotals = $alltotals + $all->price;
-            }
-            return response()->json(['data1' => $query]);  //回傳明細
-            // echo '價格'.$alltotals;  //回傳總價
+        // $result = count($query);
 
-        }
+
+        // if ($result > 0) {
+        //     foreach ($query as $all) {
+        //         $alltotals = $alltotals + $all->price;
+        //     }
+        return response()->json(['data1' => $users, 'data2' => $exist]);  //回傳明細
+        // echo '價格'.$alltotals;  //回傳總價
+
+        // }
     }
 
     public function Shopproduct1(Request $request) //測試用
@@ -84,8 +98,8 @@ class shopcontroller extends Controller
 
         }
 
-        $total= '';
-        echo $query.'總價為'. $result;
+        $total = '';
+        echo $query . '總價為' . $result;
     }
 
     // public function Shopproduct(Request $request)
@@ -108,42 +122,47 @@ class shopcontroller extends Controller
 
     public function test(Request $request) //測試用
     {
-        $id =6;
-        $productqyilty =8;
-        $getstamps = DB::table('product')
-            ->where('id', '=', $id)
+        $users = DB::table('shopproduct')->where('productid', '=', '4') //取出json
             ->get();
-        $result = count($getstamps);
-        if ($result > 0) {
-            $price = 200;
-            $name = '222222';
-            $shop = DB::table('shopproduct')
-            ->where('productid', '=', $id)
-            ->get();
-            $alltotals = 0;
-            $result2 = count($shop);
+        $user = DB::table('shopproduct')->where('productid', '4')->first(); //取出陣列
+        echo  $users;
 
-            if ($result2 <= 0) {
-                $alltotals = $price * $productqyilty;
-                DB::table('shopproduct')->insert(
-                    ['name' => $name, 'quantity' => $productqyilty, 'price' => $price, 'total' =>  $alltotals, 'productid' => $id]
+        // $id =6;
+        // $productqyilty =8;
+        // $getstamps = DB::table('product')
+        //     ->where('id', '=', $id)
+        //     ->get();
+        // $result = count($getstamps);
+        // if ($result > 0) {
+        //     $price = 200;
+        //     $name = '222222';
+        //     $shop = DB::table('shopproduct')
+        //     ->where('productid', '=', $id)
+        //     ->get();
+        //     $alltotals = 0;
+        //     $result2 = count($shop);
+
+        //     if ($result2 <= 0) {
+        //         $alltotals = $price * $productqyilty;
+        //         DB::table('shopproduct')->insert(
+        //             ['name' => $name, 'quantity' => $productqyilty, 'price' => $price, 'total' =>  $alltotals, 'productid' => $id]
 
 
-                );
-            } else {
-                // $name= $getstamps[0]->productname;
-                $check = DB::table('shopproduct')
-                    ->where('productid', '=', $id)
-                    ->get();
-                $qul = $check[0]->quantity;
-                $totalprice = $check[0]->total;
-                $qul = $qul + $productqyilty;
-                $alltotals = $price * $productqyilty;
-                $alltotals = $alltotals+$totalprice ;
-                DB::table('shopproduct')
-                    ->where('productid', $id)
-                    ->update(['quantity' => $qul, 'total' => $alltotals]);
-            }
-        }
+        //         );
+        //     } else {
+        //         // $name= $getstamps[0]->productname;
+        //         $check = DB::table('shopproduct')
+        //             ->where('productid', '=', $id)
+        //             ->get();
+        //         $qul = $check[0]->quantity;
+        //         $totalprice = $check[0]->total;
+        //         $qul = $qul + $productqyilty;
+        //         $alltotals = $price * $productqyilty;
+        //         $alltotals = $alltotals+$totalprice ;
+        //         DB::table('shopproduct')
+        //             ->where('productid', $id)
+        //             ->update(['quantity' => $qul, 'total' => $alltotals]);
+        //     }
+        // }
     }
 }
