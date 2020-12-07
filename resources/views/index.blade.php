@@ -42,32 +42,87 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-
-      <tr>
-
-      <tr>
-
 
     </tbody>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
 
+      </tr>
+    </tfoot>
   </table>
-  <input type='button' class='btn btn-primary ' name='addtable2' id="addtable2" value='新增'>
+
+
+
 
 </body>
 
 </html>
 <script>
   $(document).ready(function() {
+    $(document).on('click', '.delete1', function() {
+      $(this).parent().parent().remove();
+
+      // $('#delete1' + id + '').trigger('click');全部刪除
+
+    });
+    var shoptotal = 0;
+    $(document).on('click', '.delete1', function() {
+      let shopid = $(this).attr("name");
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+
+      });
+      $.ajax({
+        type: "POST",
+        url: 'deleteshop',
+        data: {
+          test4: CSRF_TOKEN,
+          deleteid: shopid
+        },
+        dataType: "JSON",
+        success: function(response) {
+
+          shoptotal = response.ok;
+          // alert(shoptotal);
+          let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' >/td></tr></tfoot>"
+          $("#table").append(shoptotal2);
+          $('#post').click();
+          
+
+          $(this).parent().parent().remove();
+
+
+
+
+        },
+        error: function(thrownError) {
+          alert('刪除失敗');
+        }
+
+      });
+
+
+
+
+    });
+
 
     $(document).on('click', '.add', function() {
+
 
       $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-     
+
       let shopid = $(this).attr("id");
       let shopquilty = $("input[id=" + shopid + "]").val();
       $.ajax({
@@ -84,7 +139,9 @@
           let l = response.data1;
           let n = l.length
           let exist = response.data2;
-        
+          var shoptotal = response.data3;
+
+
           for (var i = 0; i < n; i++) {
             var productname = l[i].name;
             var productquantity = l[i].quantity;
@@ -95,15 +152,27 @@
 
             // alert(productprice);
 
-            var shopmain = "<tr><td>  " + productname + "  </td><td>" + productprice + " </td><td>" + productquantity + "</td><td>" + producttotal + "</td><td>   <input type='button'  class='btn btn-danger delete1' name='delete1'  id = 'delete1" + productid + "'    value='刪除' > </td></tr>"
-
+            let shopmain = "<tr><td>  " + productname + "  </td><td>" + productprice + " </td><td>" + productquantity + "</td><td>" + producttotal + "</td><td>   <input type='button'  class='btn btn-danger delete1' name=" + productid + "  id = 'delete1" + productid + "'    value='刪除' ></td><td>   <input type='button'  class='btn btn-danger delete11' name=" + productid + "  id = 'delete11" + productid + "'    value='刪除' ></td></tr>"
+            let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' ></td></tr></tfoot>"
             $("#table").append(shopmain);
+            $("#table").append(shoptotal2);
 
             test(productid);
+            $("#delete11" + productid + "").hide();
+           
             if (exist == 'true') {
-              $('#delete1' + productid + '').click();
+              $('#delete11' + productid + '').click();
+              $("#delete11" + productid + "").hide();
+
             }
             clear(productid);
+            $('#post').click();
+            $(document).on('click', '#post', function() {
+              $(this).parent().parent().remove();
+
+
+
+            });
           }
 
         },
@@ -115,19 +184,22 @@
 
     });
 
+
+
     // $(document).on('click', '#addtable2', function() {
     //   $('#table').append("<tr><td>add_row2-01</td><td>add_row2-02</td><td>add_row2-03</td><td>123</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>");
     // });
     function test2() {
 
     }
-    function clear(id)
-{
-  $("input[name='quilty" + id + "']").val("");
- 
-}
+
+    function clear(id) {
+      $("input[name='quilty" + id + "']").val("");
+
+    }
+
     function test(id) {
-      $(document).on('click', '#delete1' + id + '', function() {
+      $(document).on('click', '#delete11' + id + '', function() {
         $(this).parent().parent().remove();
 
         // $('#delete1' + id + '').trigger('click');全部刪除

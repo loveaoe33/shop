@@ -18,6 +18,7 @@ class shopcontroller extends Controller
 
     {
         $exist = '';
+        $tatalprice = 0;
         $id = $request->get('shopidd');
         $productqyilty = $request->get('shopquiltyy');
         $getstamps = DB::table('product')
@@ -45,7 +46,7 @@ class shopcontroller extends Controller
                 // $users = DB::table('shopproduct')->where('productid', '=', $id)
                 // ->get();
                 // return response()->json(['data1' => $users,'data2' =>$exist]);
-            } else {
+            } else if($result2>0){
                 // $name= $getstamps[0]->productname;
                 $check = DB::table('shopproduct')
                     ->where('productid', '=', $id)
@@ -66,8 +67,21 @@ class shopcontroller extends Controller
             }
         }
 
-        $users = DB::table('shopproduct')->where('productid', '=', $id)
+        $shopdata = DB::table('shopproduct')->where('productid', '=', $id)
             ->get();
+        $totalprice = 0;
+        $shoptatal = DB::table('shopproduct')->get();
+        $result3 = count($shoptatal);
+        if ($result3 > 0) {
+
+            foreach ($shoptatal as $all) {
+                // global $tatalprice;
+                $tatalprice = $tatalprice +  $all->total;
+            };
+        } else {
+
+            $tatalprice = 0;
+        }
 
         // $result = count($query);
 
@@ -76,10 +90,34 @@ class shopcontroller extends Controller
         //     foreach ($query as $all) {
         //         $alltotals = $alltotals + $all->price;
         //     }
-        return response()->json(['data1' => $users, 'data2' => $exist]);  //回傳明細
+        return response()->json(['data1' => $shopdata, 'data2' => $exist, 'data3' => $tatalprice]);  //回傳明細
         // echo '價格'.$alltotals;  //回傳總價
 
         // }
+    }
+
+    public function deleteshop(Request $request)
+    {
+        $deleteid = $request->get('deleteid');
+        $tatolprice = 0;
+        DB::table('shopproduct')
+            ->where('productid', $deleteid)
+            ->delete();
+        $lasttotal = shopproduct::all();
+        $result4 = count($lasttotal);
+        if ($result4 > 0) {
+
+            foreach ($lasttotal as $all) {
+                // global $tatalprice;
+                $tatolprice = $tatolprice +  $all->total;
+            };
+        } else {
+
+            $tatolprice = 0;
+        }
+
+
+        return response()->json(['ok'=>$tatolprice]);
     }
 
     public function Shopproduct1(Request $request) //測試用
