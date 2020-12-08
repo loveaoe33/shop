@@ -91,13 +91,15 @@
 
           shoptotal = response.ok;
           // alert(shoptotal);
-          let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' >/td></tr></tfoot>"
+          let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' ></td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td></tr></tfoot>"
           $("#table").append(shoptotal2);
-          $('#post').click();
           
+          $('#post').click();
+          $("#post").hide();
+         
 
-          $(this).parent().parent().remove();
-
+          // $(this).parent().parent().remove();
+          buttoncheck(shoptotal); 
 
 
 
@@ -107,8 +109,8 @@
         }
 
       });
-
-
+     
+      $("#post").hide();
 
 
     });
@@ -153,16 +155,18 @@
             // alert(productprice);
 
             let shopmain = "<tr><td>  " + productname + "  </td><td>" + productprice + " </td><td>" + productquantity + "</td><td>" + producttotal + "</td><td>   <input type='button'  class='btn btn-danger delete1' name=" + productid + "  id = 'delete1" + productid + "'    value='刪除' ></td><td>   <input type='button'  class='btn btn-danger delete11' name=" + productid + "  id = 'delete11" + productid + "'    value='刪除' ></td></tr>"
-            let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' ></td></tr></tfoot>"
+            let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' ></td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td></tr></tfoot>"
             $("#table").append(shopmain);
             $("#table").append(shoptotal2);
 
             test(productid);
             $("#delete11" + productid + "").hide();
+            
            
             if (exist == 'true') {
               $('#delete11' + productid + '').click();
               $("#delete11" + productid + "").hide();
+              $("#post").hide();
 
             }
             clear(productid);
@@ -174,7 +178,7 @@
 
             });
           }
-
+          $("#post").hide();
         },
         error: function(thrownError) {
           alert('新增失敗');
@@ -189,8 +193,17 @@
     // $(document).on('click', '#addtable2', function() {
     //   $('#table').append("<tr><td>add_row2-01</td><td>add_row2-02</td><td>add_row2-03</td><td>123</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>");
     // });
-    function test2() {
+    function buttoncheck(shoptotal) {
+      if(shoptotal<=0)
+      document.getElementById("gobuy").disabled = true,
+      document.getElementById('gobuy').value = '無法提交';
 
+      
+     
+      else
+      {
+        document.getElementById("gobuy").disabled = false;
+      }
     }
 
     function clear(id) {
