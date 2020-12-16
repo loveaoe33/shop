@@ -22,5 +22,5 @@ Route::post('/insertshop','shopcontroller@insertshop');
 Route::post('/allproduct','shopcontroller@allproduct');
 Route::post('/deleteshop','shopcontroller@deleteshop');
 Route::get('/CardTest','shopcontroller@CardTest');
-
+Route::get('/post','shopcontroller@post');
 Route::get('/test','shopcontroller@test');

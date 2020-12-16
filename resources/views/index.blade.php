@@ -70,7 +70,8 @@
       // $('#delete1' + id + '').trigger('click');全部刪除
 
     });
-    var shoptotal = 0;
+    let userid='';
+    let shoptotal = 0;
     $(document).on('click', '.delete1', function() {
       let shopid = $(this).attr("name");
       $.ajaxSetup({
@@ -96,6 +97,7 @@
           
           $('#post').click();
           $("#post").hide();
+          alert(userid);
          
 
           // $(this).parent().parent().remove();
@@ -145,6 +147,8 @@
 
 
           for (var i = 0; i < n; i++) {
+             userid=l[i].userid;
+            alert(userid);
             var productname = l[i].name;
             var productquantity = l[i].quantity;
             var producttotal = l[i].total;

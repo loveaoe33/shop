@@ -19,6 +19,7 @@ class shopcontroller extends Controller
     public function insertshop(Request $request)
 
     {
+        $user='loveaoe3310912281500';
         $exist = '';
         $tatalprice = 0;
         $id = $request->get('shopidd');
@@ -26,9 +27,9 @@ class shopcontroller extends Controller
         $getstamps = DB::table('product')
             ->where('id', '=', $id)
             ->get();
-        $result = count($getstamps);
-        if ($result > 0) {
-            $price = $getstamps[0]->price;
+        $result = count($getstamps);  
+        if ($result > 0) {  //判斷購物車有無商品
+            $price = $getstamps[0]->price; //判斷購物車有重複商品
             $name = $getstamps[0]->productname;
             $shop = DB::table('shopproduct')
                 ->where('productid', '=', $id)
@@ -39,7 +40,7 @@ class shopcontroller extends Controller
             if ($result2 <= 0) {
                 $alltotals = $price * $productqyilty;
                 DB::table('shopproduct')->insert(
-                    ['name' => $name, 'quantity' => $productqyilty, 'price' => $price, 'total' =>  $alltotals, 'productid' => $id]
+                    ['name' => $name, 'quantity' => $productqyilty, 'price' => $price, 'total' =>  $alltotals, 'productid' => $id,'userid' =>$user]
 
 
                 );
@@ -205,14 +206,34 @@ class shopcontroller extends Controller
         //     }
         // }
     }
+    public function post() //測試用
+    {
+        return view('post');
+    }
+    
 
     public function CardTest(Request $request) //測試用
     {
-       
+
         try {
-            
-            
             $obj =new ECPay();
+            $buy = DB::table('shopproduct')->where('userid', '=', 'loveaoe3310912281500')
+            ->get();
+            $buyalltotal=0;
+            $producttotal=0;
+            foreach($buy as $all)
+            {
+    $buyname=$all->name;
+    $buyprice=$all->price;
+    $buyquantity=$all->quantity;
+    $producttotal=$buyprice*$buyquantity;
+    $buyalltotal=$buyalltotal+($buyprice*$buyquantity);
+                //訂單的商品資料
+                array_push($obj->Send['Items'], array('Name' => $buyname, 'Price' => (int)$buyprice,
+                'Currency' => "元", 'Quantity' => (int) $buyquantity, 'Text' =>'此商品總額', 'Producttotal'=>(int)$producttotal, 'Currenccy'=>'元','URL' => "dedwed"));
+            }
+            
+           
        
             //服務參數
             $obj->ServiceURL  = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5";   //服務位置
@@ -227,14 +248,12 @@ class shopcontroller extends Controller
             $obj->Send['ReturnURL']         = "http://www.ecpay.com.tw/receive.php" ;    //付款完成通知回傳的網址
             $obj->Send['MerchantTradeNo']   = $MerchantTradeNo;                          //訂單編號
             $obj->Send['MerchantTradeDate'] = date('Y/m/d H:i:s');                       //交易時間
-            $obj->Send['TotalAmount']       = 200;                                      //交易金額
-            $obj->Send['TradeDesc']         = "good to drink" ;                          //交易描述
+            $obj->Send['TotalAmount']       = $buyalltotal;                                      //交易金額
+            $obj->Send['TradeDesc']         = "交易備註" ;                          //交易描述
             $obj->Send['ChoosePayment']     = ECPayMethod::Credit ;              //付款方式:Credit
             $obj->Send['IgnorePayment']     = ECPayMethod::GooglePay ;           //不使用付款方式:GooglePay
     
-            //訂單的商品資料
-            array_push($obj->Send['Items'], array('Name' => "歐付寶黑芝麻豆漿", 'Price' => (int)"200",
-                       'Currency' => "元", 'Quantity' => (int) "1", 'URL' => "dedwed"));
+
     
     
             //Credit信用卡分期付款延伸參數(可依系統需求選擇是否代入)
