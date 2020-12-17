@@ -64,13 +64,14 @@
 </html>
 <script>
   $(document).ready(function() {
+    
     $(document).on('click', '.delete1', function() {
       $(this).parent().parent().remove();
 
       // $('#delete1' + id + '').trigger('click');全部刪除
 
     });
-    let userid='';
+    let userid = '';
     let shoptotal = 0;
     $(document).on('click', '.delete1', function() {
       let shopid = $(this).attr("name");
@@ -80,6 +81,7 @@
         }
 
       });
+
       $.ajax({
         type: "POST",
         url: 'deleteshop',
@@ -94,14 +96,14 @@
           // alert(shoptotal);
           let shoptotal2 = "<tfoot><tr><td></td><td></td><td></td><td>總價格為:" + shoptotal + "</td><td><input type='button'  class='btn-success' name='gobuy'  id = 'gobuy' value='提交' ></td><td>   <input type='button'  class='btn-success' name='post'  id = 'post' value='購買' ></td></tr></tfoot>"
           $("#table").append(shoptotal2);
-          
+
           $('#post').click();
           $("#post").hide();
-          alert(userid);
-         
+
+
 
           // $(this).parent().parent().remove();
-          buttoncheck(shoptotal); 
+          buttoncheck(shoptotal);
 
 
 
@@ -111,7 +113,7 @@
         }
 
       });
-     
+
       $("#post").hide();
 
 
@@ -147,8 +149,8 @@
 
 
           for (var i = 0; i < n; i++) {
-             userid=l[i].userid;
-            alert(userid);
+            userid = l[i].userid;
+
             var productname = l[i].name;
             var productquantity = l[i].quantity;
             var producttotal = l[i].total;
@@ -165,8 +167,8 @@
 
             test(productid);
             $("#delete11" + productid + "").hide();
-            
-           
+
+
             if (exist == 'true') {
               $('#delete11' + productid + '').click();
               $("#delete11" + productid + "").hide();
@@ -198,14 +200,13 @@
     //   $('#table').append("<tr><td>add_row2-01</td><td>add_row2-02</td><td>add_row2-03</td><td>123</td><td>   <input type='button'  class='btn btn-danger delete' name='delete'  id = " + b + "    value='刪除' > </td></tr>");
     // });
     function buttoncheck(shoptotal) {
-      if(shoptotal<=0)
-      document.getElementById("gobuy").disabled = true,
-      document.getElementById('gobuy').value = '無法提交';
+      if (shoptotal <= 0)
+        document.getElementById("gobuy").disabled = true,
+        document.getElementById('gobuy').value = '無法提交';
 
-      
-     
-      else
-      {
+
+
+      else {
         document.getElementById("gobuy").disabled = false;
       }
     }
@@ -336,5 +337,31 @@
 
 
     //   });
+
+
+
+
+    $(document).on('click', '#gobuy', function() {
+      $.ajax({
+        type: "post",
+        url: 'CardTest',
+        data: {
+          test5: CSRF_TOKEN, userid: userid
+        },
+        dataType: "JSON",
+        success: function(response) {
+          const id=response.okUser;
+          // "CardTest1?id="+id+""
+          window.location.href="CardTest1/"+ id +""
+         
+        },
+        error: function(thrownError) {
+          alert('提交失敗');
+        }
+      });
+
+
+    });
+    
   });
 </script>

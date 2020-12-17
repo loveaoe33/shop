@@ -212,12 +212,22 @@ class shopcontroller extends Controller
     }
     
 
-    public function CardTest(Request $request) //測試用
+    public function CardTest(Request $request) 
     {
+        $returnUser=$request->get('userid');
+        return response()->json(['okUser' => $returnUser]);
+
+    }
+
+
+    public function CardTest1($id) //測試用
+    {
+        
 
         try {
+          
             $obj =new ECPay();
-            $buy = DB::table('shopproduct')->where('userid', '=', 'loveaoe3310912281500')
+            $buy = DB::table('shopproduct')->where('userid', '=', $id)
             ->get();
             $buyalltotal=0;
             $producttotal=0;
@@ -289,11 +299,12 @@ class shopcontroller extends Controller
             $obj->SendExtend['DelayDay'] = '0';
             $obj->SendExtend['InvType'] = ECPay_InvType::General;
             */
-    
-    
+           
+      
             //產生訂單(auto submit至ECPay)
             $obj->CheckOut();
-    
+           
+             
         
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -301,5 +312,4 @@ class shopcontroller extends Controller
     
 
     }
-
 }
