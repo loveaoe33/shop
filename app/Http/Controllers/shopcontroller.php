@@ -222,7 +222,7 @@ class shopcontroller extends Controller
 
     public function CardTest1($id) //測試用
     {
-        
+        $producthash=$id;
 
         try {
           

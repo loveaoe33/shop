@@ -5,6 +5,7 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 
@@ -64,7 +65,7 @@
 </html>
 <script>
   $(document).ready(function() {
-    
+
     $(document).on('click', '.delete1', function() {
       $(this).parent().parent().remove();
 
@@ -187,7 +188,13 @@
           $("#post").hide();
         },
         error: function(thrownError) {
-          alert('新增失敗');
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '數量不得為空!',
+            footer: '<a href>Why do I have this issue?</a>'
+          })
+       
         }
 
       });
@@ -346,22 +353,38 @@
         type: "post",
         url: 'CardTest',
         data: {
-          test5: CSRF_TOKEN, userid: userid
+          test5: CSRF_TOKEN,
+          userid: userid
         },
         dataType: "JSON",
         success: function(response) {
-          const id=response.okUser;
-          // "CardTest1?id="+id+""
-          window.location.href="CardTest1/"+ id +""
-         
+          const id = response.okUser;
+          Swal.fire({
+            icon: 'success',
+            title: '訂單完成',
+            showConfirmButton: false,
+            timer: 1500
+            // "CardTest1?id="+id+""
+
+
+          })
+          setTimeout(function() {
+            window.location.href = "CardTest1/" + id + ""
+          }, 1700);
+
         },
         error: function(thrownError) {
-          alert('提交失敗');
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '訂單錯誤請聯絡!',
+            footer: '<a href>Why do I have this issue?</a>'
+          })
         }
       });
 
 
     });
-    
+
   });
 </script>
