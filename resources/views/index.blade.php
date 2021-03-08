@@ -442,11 +442,11 @@
             <!-- 轮播（Carousel）项目 -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img style="height:420px;width:100%" src="'http://127.0.0.1:8000/image/apple.jpg" alt="First slide">
+                    <img style="height:420px;width:100%" src="http://127.0.0.1:8000/image/apple.jpg" alt="First slide">
                     <div class="carousel-caption">蘋果專賣</div>
                 </div>
                 <div class="item">
-                    <img style="height:420px;width:100%" src="http://127.0.0.1:8000/image/p5.jpg" alt="Second slide">
+                    <img style="height:420px;width:100%" src="http://127.0.0.1:8000/image/2327.jpg" alt="Second slide">
                     <div class="carousel-caption">華碩專賣</div>
                 </div>
                 <div class="item">
